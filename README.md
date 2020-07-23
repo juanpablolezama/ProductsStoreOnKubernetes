@@ -1,39 +1,20 @@
-![Docker Image CI](https://github.com/HoussemDellai/ProductsStoreOnKubernetes/workflows/Docker%20Image%20CI/badge.svg)
-
 # ProductsStoreOnKubernetes
 
 This is a sample application used to demonstrate how to create dockerized apps and deploy them to Kubernetes cluster.  
 
 It takes a sample ASP.NET Core MVC app, creates its Dockerfile, then the Kubernetes deployment objects.  
 
+### 1) Configuration Files
+
 The Dockerfile is used to build the app from source code. Then runs the app inside a docker container.  
 The k8s objects defined in YAML files are used to deploy the app into a Kubernetes cluster. These files are:  
-1) **mvc-deployment.yaml**: used to create a Deployment and a Service to run the app.  
-2) **mssql-deployment.yaml**: used to create a Deployment and a Service to run the SQL Server container.  
-3) **mssql-config-map.yaml**: creates a ConfigMap object to store the database connection string as key-value pair. It is accessed by the app to retrieve the connection string as apass it as environment variable.  
-4) **mssql-secret.yaml**: creates a Secret to securely save database connection string as key-value pair.  
-5) **mssql-pv.azure.yaml**: creates PersistentVolume and PersistentVolumeClaim objects in order to provision a storage space to save the database files.  
-
-### 1) Introduction: Kubernetes and microservices
-
-    1.1) The vision: Microservices on Docker containers on Kubernetes hosted on the Cloud and powered by DevOps.
-    
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-architect.png?raw=true" width="80%"/>
-Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/  
+1.1) **mvc-deployment.yaml**: used to create a Deployment and a Service to run the app.  
+1.2) **mssql-deployment.yaml**: used to create a Deployment and a Service to run the SQL Server container.  
+1.3) **mssql-config-map.yaml**: creates a ConfigMap object to store the database connection string as key-value pair. It is accessed by the app to retrieve the connection string as apass it as environment variable.  
+1.4) **mssql-secret.yaml**: creates a Secret to securely save database connection string as key-value pair.  
+1.5) **mssql-pv.azure.yaml**: creates PersistentVolume and PersistentVolumeClaim objects in order to provision a storage space to save the database files.  
 
 
-    1.2) Learn more about Kubernetes architecture:
-
-<a href="https://www.youtube.com/watch?v=pR-UlYf61uA">
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-explained.png?raw=true" width="80%"/>
-</a>
-
-    1.3) Learn more about Kubernetes objects: Deployment, Service, ConfigMap, Secret, PersistentVolume...
-
-<a href="https://www.youtube.com/watch?v=HJ6F05Pm5mQ">
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-objects.png?raw=true" width="80%"/>
-</a>
-	
 ### 2) Create docker container  
 
 Inside the MvcApp folder, we have a sample ASP.NET Core MVC application that displays web pages and connects to a Database. The goal here is to run this application in a Docker container. For that, we need the **Dockerfile** which describes the instructions to build/compile app from source code and deploy it into a base image that have .NET Core SDK and Runtime.  
@@ -125,48 +106,23 @@ $ docker push $registry/mvc-app:1.0
 ```console
 8.1) $ az group create \  
 		  --location westeurope \  
-		  --subscription "Microsoft Azure Sponsorship" \  
+		  --subscription "Pago por uso" \  
 		  --name aks-k8s-rg  
 8.2) $ az aks create \  
 		  --generate-ssh-keys \  
-		  --subscription "Microsoft Azure Sponsorship" \  
+		  --subscription "Pago por uso" \  
 		  --node-count 1 \  
 		  --resource-group aks-k8s-rg \  
 		  --name aks-k8s   
 8.3) $ az aks get-credentials \  
 		  --resource-group aks-k8s-rg \  
 		  --name aks-k8s \  
-		  --subscription "Microsoft Azure Sponsorship" 
-	 Merged "aks-k8s" as current context in /Users/houssem/.kube/config  
+		  --subscription "Pago por uso" 
+	 Merged "aks-k8s" as current context in /Users/<USER_ID>/.kube/config  
 8.4) $ kubectl create clusterrolebinding kubernetes-dashboard \  
                --clusterrole=cluster-admin \  
                --serviceaccount=kube-system:kubernetes-dashboard  
 8.5) $ az aks browse \
 		  --resource-group aks-k8s-rg \
 		  --name aks-k8s \
-		  --subscription "Microsoft Azure Sponsorship"  
-```
-
-### 9) Create the CI/CD pipelines for using Azure DevOps   
-
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/ci-cd-aks.png?raw=true"/>
-
-	9.1) CI pipeline: builds the container and pushes it to docker hub.  
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/kubernetes-ci.png?raw=true"/>
-
-	9.2) CD pipeline: deploys the YAML manifest files into Kubernetes cluster.  
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/kubernetes-cd.png?raw=true"/>
-	
-### 10) Discussion points  
-scalability, health check, mounting volume, resource limits, service discovery, deploy with Helm...  
-
-### 11) More resources
-
-eShopOnContainers: https://github.com/dotnet-architecture/eShopOnContainers
-
-https://www.udemy.com/kubernetes-for-developers/
-Please email me if you want a free coupon :)  
-
-<a href="https://www.udemy.com/kubernetes-for-developers/">
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/udemy-courses.png?raw=true" width="90%"/>
-</a>
+		  --subscription "Pago por uso"  
